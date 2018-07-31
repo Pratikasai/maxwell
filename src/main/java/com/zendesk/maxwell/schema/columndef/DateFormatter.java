@@ -83,6 +83,18 @@ public class DateFormatter {
 		return sb.toString();
 	}
 
+	private static String formatTime(Calendar cal) {
+		StringBuilder sb = stringBuilderThreadLocal.get();
+		sb.setLength(0);
+
+		zeroPad(sb, cal.get(Calendar.HOUR_OF_DAY), 2);
+		sb.append(":");
+		zeroPad(sb, cal.get(Calendar.MINUTE), 2);
+		sb.append(":");
+		zeroPad(sb, cal.get(Calendar.SECOND), 2);
+		return sb.toString();
+	}
+	
 	public static String formatDate(Object value) {
 		Calendar cal;
 
@@ -97,7 +109,6 @@ public class DateFormatter {
 		return formatDate(cal);
 	}
 
-
 	public static String formatDateTime(Object value, Timestamp ts) {
 		Calendar cal;
 
@@ -110,6 +121,20 @@ public class DateFormatter {
 		cal.setTimeInMillis(ts.getTime());
 
 		return formatDateTime(cal);
+	}
+	
+	public static String formatTime(Object value, Timestamp ts) {
+		Calendar cal;
+
+		if ( value instanceof Long ) {
+			cal = calendarUTCThreadLocal.get();
+		} else {
+			cal = calendarThreadLocal.get();
+		}
+
+		cal.setTimeInMillis(ts.getTime());
+
+		return formatTime(cal);
 	}
 
 	private static long floorDiv(long a, long b) {
