@@ -66,7 +66,7 @@ public class MaxwellMysqlConfig {
 			return;
 
 		for ( String opt : opts.split("&") ) {
-			String[] valueKeySplit = opt.trim().split("=");
+			String[] valueKeySplit = opt.trim().split("=", 2);
 			if (valueKeySplit.length == 2) {
 				this.jdbcOptions.put(valueKeySplit[0], valueKeySplit[1]);
 			}
@@ -129,6 +129,11 @@ public class MaxwellMysqlConfig {
 				sslMode == that.sslMode &&
 				Objects.equals(jdbcOptions, that.jdbcOptions) &&
 				Objects.equals(connectTimeoutMS, that.connectTimeoutMS);
+	}
+
+	public boolean sameServerAs(MaxwellMysqlConfig other) {
+		return Objects.equals(host, other.host) &&
+			Objects.equals(port, other.port);
 	}
 
 	@Override
